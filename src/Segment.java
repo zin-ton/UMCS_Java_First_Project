@@ -31,7 +31,7 @@ public class Segment {
         ans += '"';
         ans += Math.max(point1.x, point2.x);
         ans += '"';
-        ans = " y2 = ";
+        ans += " y1 = ";
         ans += '"';
         ans += Math.min(point1.y, point2.y);
         ans += '"';
