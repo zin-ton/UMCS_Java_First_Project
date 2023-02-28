@@ -1,6 +1,12 @@
 import java.lang.Math;
 public class Segment {
     private Point point1, point2;
+    /*
+    Public Point(Point point1, Point point2){
+        this.point1 = point1;
+        this.point2 = point2;
+    }
+     */
     public void setPoints(Point point1, Point point2){
         this.point1 = point1;
         this.point2 = point2;
