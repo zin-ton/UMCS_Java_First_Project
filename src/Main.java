@@ -5,5 +5,6 @@ public class Main {
         Segment segment = new Segment();
         segment.setPoints(point, point1);
         segment.length();
+        System.out.println(segment.toSvg());
     }
 }
