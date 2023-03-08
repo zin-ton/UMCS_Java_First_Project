@@ -23,6 +23,14 @@ public class Polygon {
 
         return String.format(Locale.ENGLISH,"<polygon points=\"%s\" style = \"%s\"/>", pointsString,styleSettings.toSvg());
     }
-
-
+    public Point getMaxCords(){
+        double x = 0, y=0;
+        Point ans;
+        for(Point point : arr){
+            if(point.x > x) x = point.x;
+            if(point.y > y) y = point.y;
+        }
+        ans = new Point(x,y);
+        return ans;
+    }
 }
