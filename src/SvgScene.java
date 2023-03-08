@@ -4,10 +4,10 @@ import java.util.ArrayList;
 import java.util.Locale;
 
 public class SvgScene {
-    private ArrayList<Polygon> polygons = new ArrayList<>();
+    private ArrayList<Shape> shapes = new ArrayList<>();
     private int height = 0, width = 0;
     public void addPolygon(Polygon polygon){
-        this.polygons.add(polygon);
+        this.shapes.add(polygon);
         Point size = polygon.getMaxCords();
         if(height < size.y){
             this.height = (int)(size.y+1);
@@ -19,8 +19,8 @@ public class SvgScene {
     }
     public void save(String path){
         String svg = String.format(Locale.ENGLISH, "<svg width=\"%d\" height=\"%d\">", width, height);
-        for(Polygon polygon : polygons){
-            svg += polygon.toSvg();
+        for(Shape shape : shapes){
+            svg += shape.toSvg();
         }
         svg += "</svg>";
         try {
