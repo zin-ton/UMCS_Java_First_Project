@@ -1,43 +1,26 @@
+import java.util.Locale;
+
 public class Polygon {
-    private Point[] points = new Point[1];
-    public void Polygon(Point point1){
-        points[1] = new Point(1,1);
-        this.points[1] = point1;
+    private Point[] arr;
+
+    public Polygon(int count) {
+        arr = new Point[count];
     }
-    public void set_point(int n, Point point1){
-        if(points.length < n){
-            points = new Point[(n-points.length)+1];
-            points[n] = new Point(1,1);
-            points[n] = point1;
-        }
+
+    public void setPoint(int index, Point point) {
+        arr[index] = point;
     }
-    public String ToSvg(int a, int b){
-        String ans;
-        ans = "<line x1 = ";
-        ans += '"';
-        ans += Math.min(points[a].x, points[b].x);
-        ans += '"';
-        ans += " x2 = ";
-        ans += '"';
-        ans += Math.max(points[a].x, points[b].x);
-        ans += '"';
-        ans += " y1 = ";
-        ans += '"';
-        ans += Math.min(points[a].y, points[b].y);
-        ans += '"';
-        ans += " y2 = ";
-        ans += '"';
-        ans += Math.max(points[a].y, points[b].y);
-        ans += '"';
-        ans += " stroke = ";
-        ans += '"';
-        ans += "red";
-        ans += '"';
-        ans += " stroke-width = ";
-        ans += '"';
-        ans += 5;
-        ans += '"';
-        ans+="/>";
-        return ans;
+
+    public void setPoints(Point[] points) {
+        arr = points;
+    }
+
+    public String toSvg() {
+        String pointsString = "";
+        for (Point point : arr)
+            pointsString += point.x + "," + point.y + " ";
+
+        return String.format(Locale.ENGLISH, "<polygon points=\"%s\" />", pointsString);
     }
 }
+

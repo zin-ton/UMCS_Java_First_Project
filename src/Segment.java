@@ -1,112 +1,49 @@
-import java.lang.Math;
-public class Segment {
-    private Point point1, point2;
-    /*
-    Public Point(Point point1, Point point2){
-        this.point1 = point1;
-        this.point2 = point2;
-    }
-     */
-    //   <line x1 = "point1.x" x2 = "point2.x" y1 = "point1.y" y2 = "point2.y" stroke = "red" stroke-width = "5"/>
-    public void setPoints(Point point1, Point point2){
-        this.point1 = point1;
-        this.point2 = point2;
-    }
-    public double length(){
-        return Math.sqrt(Math.pow(point1.x-point2.x,2)+Math.pow(point1.y-point2.y,2));
-    }
-    public Point returnPoint1(){
-        return this.point1;
-    }
-    public Point returnPoint2(){
-        return this.point2;
-    }
-    public void print_points(){
-        System.out.println(point1.x);
-        System.out.println(point1.y);
-        System.out.println(point2.x);
-        System.out.println(point2.y);
-    }
-    public String toSvg(){
-        String ans;
-        ans = "<line x1 = ";
-        ans += '"';
-        ans += Math.min(point1.x, point2.x);
-        ans += '"';
-        ans += " x2 = ";
-        ans += '"';
-        ans += Math.max(point1.x, point2.x);
-        ans += '"';
-        ans += " y1 = ";
-        ans += '"';
-        ans += Math.min(point1.y, point2.y);
-        ans += '"';
-        ans += " y2 = ";
-        ans += '"';
-        ans += Math.max(point1.y, point2.y);
-        ans += '"';
-        ans += " stroke = ";
-        ans += '"';
-        ans += "red";
-        ans += '"';
-        ans += " stroke-width = ";
-        ans += '"';
-        ans += 5;
-        ans += '"';
-        ans+="/>";
-        return ans;
-    }
-    public Segment paral(Segment segment, Point point){
-        double size =  segment.length();
-        Segment answer = new Segment();
-        Point pointAns;
-        double lx=0;
-        double ly=0;
-        Point point1 = segment.returnPoint1();
-        Point point2 = segment.returnPoint2();
-        int isUper = 0;
-        double deltaY = point1.y - point2.y;
-        double deltaX = point1.x - point2.x;
-        deltaY/=deltaX;
-        deltaX = point.x - point1.x;
-        if(point.y >= (deltaY*deltaX)) isUper = 1;
-        if((point1.y <= point2.y) && isUper == 1){
-            deltaY = point1.y - point2.y;
-            lx = point.x + deltaY;
-            ly = (Math.sqrt(size*size-(point1.x-lx)*(point1.x-lx))-point.y)*-1;
-            pointAns = new Point(lx, ly);
-            answer.setPoints(point, pointAns);
-            return answer;
-        }
-        if((point1.y <= point2.y) && isUper == 0){
-            deltaY = point1.y - point2.y;
-            lx = point.x - deltaY;
-            ly = (Math.sqrt(size*size-(point1.x-lx)*(point1.x-lx))-point.y)*-1;
-            pointAns = new Point(lx, ly);
-            answer.setPoints(point, pointAns);
-            return answer;
-        }
-        else{
-            if((point1.y > point2.y) && isUper == 1){
-                deltaY = point1.y - point2.y;
-                lx = point.x - deltaY;
-                ly = (Math.sqrt(size*size-(point1.x-lx)*(point1.x-lx))-point.y)*-1;
-                pointAns = new Point(lx, ly);
-                answer.setPoints(point, pointAns);
-                return answer;
-            }
-            else{
-                if((point1.y > point2.y) && isUper == 0){
-                    deltaY = point1.y - point2.y;
-                    lx = point.x + deltaY;
-                    ly = (Math.sqrt(size*size-(point1.x-lx)*(point1.x-lx))-point.y)*-1;
-                    pointAns = new Point(lx, ly);
-                    answer.setPoints(point, pointAns);
-                    return answer;
-                }
-                else return answer;
-            }
-        }
+import java.util.Locale;
 
+public class Segment {
+
+    private final Point p1;
+    private final Point p2;
+    public Segment (Point p1,Point p2)
+    {
+        this.p1 = p1;
+        this.p2 = p2;
+    }
+
+    public Point getP1() {
+        return p1;
+    }
+
+    public Point getP2() {
+        return p2;
+    }
+
+    public float distance()
+    {
+        return (float) Math.hypot(p1.x - p2.x, p1.y - p2.y);
+    }
+
+    public String toSVG(){
+        return String.format(Locale.ENGLISH, "<line x1=\"%f\" y1=\"%f\" x2=\"%f\" y2=\"%f\" style=\"stroke:rgb(255,0,0);stroke-width:2\" />",p1.x,p1.y,p2.x,p2.y);
+    }
+
+    public static Segment[] perpendicular(Segment line, Point point, double r) {
+        double a;
+        a = (line.p1.y - line.p2.y) / (line.p1.x - line.p2.x);
+        double b;
+        a=-1/a;
+        b=point.y-a*point.x;
+
+        double x0 = point.x;
+        double y0 = point.y;
+        //double r = line.distance();
+
+        double root = Math.sqrt(-y0*y0+(2*a*x0+2*b)*y0-a*a*x0*x0-2*a*b*x0+(a*a+1)*r*r-b*b);
+        double x1 = -(root-a*y0-x0+a*b)/(a*a+1);
+        double y1 = -(a*root-a*a*y0-a*x0-b)/(a*a+1);
+        double x2 = (root+a*y0+x0-a*b)/(a*a+1);
+        double y2 = (a*root+a*a*y0+a*x0+b)/(a*a+1);
+
+        return new Segment[]{new Segment(point, new Point(x1,y1)), new Segment(point, new Point(x2,y2))};
     }
 }
